@@ -76,10 +76,7 @@ const ConnectionSelector = () => {
     return parts.join("")
   }
 
-  let value = connectionString()
-  console.log(value)
-
-  const handleSubmit  = e => dispatch(initConnection(value))
+  const handleSubmit  = e => dispatch(initConnection(connectionString()))
 
   return (
     <div className={connectionMenu}>
@@ -108,13 +105,13 @@ const ConnectionSelector = () => {
           <label htmlFor="connections-string">
             Username
           </label>
-          <input type="string" id="connections-string" value={username} onChange={handleUsernameChange} autocomplete="off" className={connectionInputStyle} />
+          <input type="string" id="connections-string" value={username} onChange={handleUsernameChange} autoComplete="off" className={connectionInputStyle} />
         </Field>
         <Field>
           <label htmlFor="connections-string">
             Password
           </label>
-          <input type="password" id="connections-string" value={password} onChange={handlePasswordChange} autocomplete="off"  className={connectionInputStyle} />
+          <input type="password" id="connections-string" value={password} onChange={handlePasswordChange} autoComplete="off"  className={connectionInputStyle} />
         </Field>
 
         <input type="submit" onClick={handleSubmit} className="btn primary" value="Connect" disabled={status === "loading"}/>
