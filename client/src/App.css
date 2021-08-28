@@ -60,3 +60,21 @@ label {
 .btn.primary:hover {
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 5px 0px;
 }
+
+
+table tr,
+tr td,
+table tbody,
+table thead,
+table tfoot,
+table tr th,
+table tfoot tr tf
+{
+    margin:0;
+    padding:0;
+    background:none;
+    border:none;
+    border-collapse:collapse;
+    border-spacing:0;
+    background-image:none;
+}

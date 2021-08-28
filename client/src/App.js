@@ -1,8 +1,12 @@
-import React, { Component } from 'react';
+import React from 'react';
 
 import './App.css';
 import Login from "./components/Login"
 import Dashboard from "./components/Dashboard"
+import { ErrorAlert, DismissButton } from './styles/alerts'
+import { clearErrors } from './features/connectionSlice'
+import { useDispatch, useSelector } from 'react-redux'
+
 
 function DynamicComponent(props) {
   if (props.isLoggedIn) {
@@ -12,35 +16,22 @@ function DynamicComponent(props) {
   }
 }
 
-class App extends Component {
-  state = {
-    data: null
-  };
+const App = () => {
+  const dispatch = useDispatch()
+  const dismissErrors = e => dispatch(clearErrors())
+  const connectionError = useSelector((state) => state.connection.error)
 
-  componentDidMount() {
-    this.callBackendAPI()
-      .then(res => this.setState({ data: res.express }))
-      .catch(err => console.log(err));
+  let errors = ""
+  if(connectionError) {
+    errors =(<ErrorAlert>{connectionError} <DismissButton onClick={dismissErrors}>x</DismissButton></ErrorAlert>)
   }
 
-    // fetching the GET route from the Express server which matches the GET route from server.js
-  callBackendAPI = async () => {
-    const response = await fetch('/api');
-    const body = await response.json();
-
-    if (response.status !== 200) {
-      throw Error(body.message)
-    }
-    return body;
-  };
-
-  render() {
-    return (
-      <div className="App">
-        <DynamicComponent isLoggedIn={true}/>
-      </div>
-    );
-  }
+  return (
+    <div className="App">
+      {errors}
+      <DynamicComponent isLoggedIn={true}/>
+    </div>
+  );
 }
 
 export default App;

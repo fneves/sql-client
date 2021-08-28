@@ -1,8 +1,27 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
   // fetching the GET route from the Express server which matches the GET route from server.js
 
+export const executeQuery = createAsyncThunk(
+  'connection/execute',
+  async ({connection, query},{ rejectWithValue }) => {
+    const response = await fetch('/api/execute', {
+      method: "POST",
+      body: JSON.stringify({ connection: connection, query: query }),
+      headers: { "Content-type": "application/json; charset=UTF-8"}
+    })
+
+    const body = await response.json();
+
+    if (response.status !== 200) {
+      return rejectWithValue(`Could not execute query "${query}": ${body.error}`)
+    } else {
+      return body
+    }
+  }
+)
+
 export const fetchTables = createAsyncThunk(
-  'explorer/fetchTables',
+  'connection/fetchTables',
   async(connection, { rejectWithValue }) => {
     const response = await fetch('/api/tables', { method: "POST",
       body: JSON.stringify({ connection: connection }),
@@ -41,11 +60,13 @@ export const initConnection = createAsyncThunk(
 export const connectionSlice = createSlice({
 	name: 'connection',
 	initialState: {
-    isConnected:  false,
-    connectionId: null,
-    status:       'idle',
-    tables:       [],
-    error:        null
+    isConnected:   false,
+    connectionId:  null,
+    status:        'idle',
+    tables:        [],
+    error:         null,
+    results:       [],
+    resultsFields: []
   },
 	reducers: {
     clearErrors(state) {
@@ -79,6 +100,18 @@ export const connectionSlice = createSlice({
       })
       .addCase(fetchTables.rejected, (state, action) => {
         state.tables = []
+        state.error = action.payload
+        state.status = 'idle'
+      })
+      .addCase(executeQuery.pending, (state, _action) => {
+        state.status = 'loading'
+      })
+      .addCase(executeQuery.fulfilled, (state, action) => {
+        state.status = 'idle'
+        state.resultsFields = action.payload.fields
+        state.results = action.payload.results
+      })
+      .addCase(executeQuery.rejected, (state, action) => {
         state.error = action.payload
         state.status = 'idle'
       })

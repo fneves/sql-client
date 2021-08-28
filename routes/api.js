@@ -5,7 +5,6 @@ var express = require('express');
 const { response } = require('express');
 var router = express.Router();
 
-
 const connections = {}
 
 router.post("/login", function(req, res, next) {
@@ -40,7 +39,7 @@ router.post("/connect", function(req, res){
       }
     })
   } catch(error) {
-    response.status(400).send({ error: error.message })
+    res.status(400).send({ error: error.message })
   }
 })
 
@@ -79,18 +78,30 @@ router.post("/tables", function(req, res){
 
 })
 
-router.post("/execute", function(req, resp) {
-  const connectionId = req.body.connectionId
+router.post("/execute", function(req, res) {
+  const connectionId = req.body.connection
   const query        = req.body.query
 
-  let connection = connections[connectionId]
+  console.log(`Executing query ${query} via connection ${connectionId}`)
 
-  console.dir(connection)
+  try {
+    let pool = connections[connectionId].connection
 
-  res.send({
-    status: "ok",
-    results: []
-  })
+    pool.query(query, (err, result) => {
+      if(err) {
+        console.dir(err)
+        res.status(400).send({ error: err.stack.split("\n")[0] })
+      } else {
+        console.log(result.rows)
+        res.send({
+          fields: result.fields.map(field => field.name),
+          results: result.rows
+        })
+      }
+    })
+  } catch(error) {
+    res.status(400).send({ error: error.message })
+  }
 })
 /* GET home page. */
 router.get('/', function(req, res, next) {
