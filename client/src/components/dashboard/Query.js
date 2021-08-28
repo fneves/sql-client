@@ -23,9 +23,8 @@ const toolbar = css`
 `
 
 export const Query = () => {
-  const tables = useSelector((state) => state.connection.tables)
   const connection = useSelector((state) => state.connection.connectionId)
-  const defaultQuery = `select * from ${tables[0].name} limit 10;`
+  const defaultQuery = ""
   const [query, setQuery] = useState(defaultQuery)
 
   const dispatch = useDispatch()

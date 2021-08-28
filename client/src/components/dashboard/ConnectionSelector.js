@@ -31,13 +31,13 @@ const connectionPanel = css`
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 `
 
-const connectionInputStyle = css({
-  width: "100%",
-  width: "-moz-available",
-  width: "-webkit-fill-available",
-  width: "fill-available",
+const connectionInputStyle = css`
+  width: 100%;
+  width: -moz-available;
+  width: -webkit-fill-available;
+  width: fill-available;
   textIndent: "5px"
-})
+`
 
 const ConnectionSelector = () => {
   const dispatch = useDispatch()

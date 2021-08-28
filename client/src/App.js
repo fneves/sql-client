@@ -7,7 +7,6 @@ import { ErrorAlert, DismissButton } from './styles/alerts'
 import { clearErrors } from './features/connectionSlice'
 import { useDispatch, useSelector } from 'react-redux'
 
-
 function DynamicComponent(props) {
   if (props.isLoggedIn) {
     return <Dashboard />

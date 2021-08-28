@@ -1,15 +1,11 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
   // fetching the GET route from the Express server which matches the GET route from server.js
+import API from "../apiClient"
 
 export const executeQuery = createAsyncThunk(
   'connection/execute',
   async ({connection, query},{ rejectWithValue }) => {
-    const response = await fetch('/api/execute', {
-      method: "POST",
-      body: JSON.stringify({ connection: connection, query: query }),
-      headers: { "Content-type": "application/json; charset=UTF-8"}
-    })
-
+    const response = await API.execute(connection, query)
     const body = await response.json();
 
     if (response.status !== 200) {
@@ -23,11 +19,7 @@ export const executeQuery = createAsyncThunk(
 export const fetchTables = createAsyncThunk(
   'connection/fetchTables',
   async(connection, { rejectWithValue }) => {
-    const response = await fetch('/api/tables', { method: "POST",
-      body: JSON.stringify({ connection: connection }),
-      headers: { "Content-type": "application/json; charset=UTF-8"}
-    })
-
+    const response = await API.fetchTables(connection)
     const body = await response.json();
 
     if (response.status !== 200) {
@@ -41,11 +33,7 @@ export const fetchTables = createAsyncThunk(
 export const initConnection = createAsyncThunk(
   'connection/init',
   async (connectionString, { rejectWithValue, dispatch }) => {
-    const response = await fetch('/api/connect', { method: "POST",
-      body: JSON.stringify({connectionString: connectionString}),
-      headers: { "Content-type": "application/json; charset=UTF-8"}
-    });
-
+    const response = await API.connect(connectionString)
     const body = await response.json();
 
     if (response.status === 200) {
