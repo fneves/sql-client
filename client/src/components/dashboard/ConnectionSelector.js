@@ -24,12 +24,20 @@ const connectionMenu = css`
 
 const connectionPanel = css`
   text-align: left;
-  min-width: 300px;
+  min-width: 400px;
   padding: 10px;
   border-radius: 5px;
   background: white;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 `
+
+const connectionInputStyle = css({
+  width: "100%",
+  width: "-moz-available",
+  width: "-webkit-fill-available",
+  width: "fill-available",
+  textIndent: "5px"
+})
 
 const ConnectionSelector = () => {
   const dispatch = useDispatch()
@@ -48,7 +56,7 @@ const ConnectionSelector = () => {
           <label htmlFor="connections-string">
             Postgres connection string
           </label>
-          <input type="string" id="connections-string" value={connection} onChange={handleChange} />
+          <input type="string" id="connections-string" value={connection} onChange={handleChange} placeholder="postgres://localhost/my-local-db" className={connectionInputStyle} />
         </div>
         <input type="submit" onClick={handleSubmit} className="btn primary" value="Connect" disabled={status === "loading"}/>
       </div>
