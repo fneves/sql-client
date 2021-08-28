@@ -21,11 +21,13 @@ const toolbar = css`
   align-items: center;
   min-height: 50px;
 `
-const DEFAULT_QUERY = "select from now()"
 
-export const Query = (props) => {
-  const [query, setQuery] = useState(DEFAULT_QUERY)
+export const Query = () => {
+  const tables = useSelector((state) => state.connection.tables)
   const connection = useSelector((state) => state.connection.connectionId)
+  const defaultQuery = `select * from ${tables[0].name} limit 10;`
+  const [query, setQuery] = useState(defaultQuery)
+
   const dispatch = useDispatch()
   const handleEditorChange = (value, _event) => setQuery(value)
   const runQuery = () => dispatch(executeQuery({ connection: connection, query: query }))
@@ -38,7 +40,7 @@ export const Query = (props) => {
       <Editor
         height="30vh"
         defaultLanguage="sql"
-        defaultValue={DEFAULT_QUERY}
+        defaultValue={defaultQuery}
         onChange={handleEditorChange}
       />
     </div>

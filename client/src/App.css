@@ -53,13 +53,15 @@ label {
 .btn.primary {
   color: white;
   border-color: transparent;
-  background: cadetblue;
+  background: #5EEAD4;
+  color: black;
 }
 
 .btn.primary:hover {
+  background: #0D9488;
+  color: white;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 5px 0px;
 }
-
 
 table tr,
 tr td,

@@ -25,7 +25,7 @@ const connectionMenu = css`
 const connectionPanel = css`
   text-align: left;
   min-width: 400px;
-  padding: 10px;
+  padding: 20px;
   border-radius: 5px;
   background: white;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
