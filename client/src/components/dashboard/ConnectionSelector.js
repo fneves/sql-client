@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
+import { Field } from "../../styles/inputs"
 
 import { css } from '@emotion/css'
 import { useSelector } from 'react-redux'
@@ -41,23 +42,81 @@ const connectionInputStyle = css`
 
 const ConnectionSelector = () => {
   const dispatch = useDispatch()
-  const connectionString = useSelector((state) => state.connection.value)
   const status = useSelector((state) => state.connection.status)
 
-  const [connection, setConnection] = useState(connectionString || '')
+  const [host, setHost] = useState('')
+  const [port, setPort] = useState('')
+  const [database, setDatabase] = useState('')
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
 
-  const handleChange  = e => setConnection(e.target.value.trim())
-  const handleSubmit  = e => dispatch(initConnection(connection))
+  const handleHostChange  = e => setHost(e.target.value.trim())
+  const handlePortChange  = e => setPort(e.target.value.trim())
+  const handleDatabaseChange  = e => setDatabase(e.target.value.trim())
+  const handleUsernameChange  = e => setUsername(e.target.value.trim())
+  const handlePasswordChange  = e => setPassword(e.target.value.trim())
+
+  const connectionString = () => {
+    const parts = ["postgres://"]
+    const authentication = [username, password].filter(item => item && item !== "")
+
+    if (authentication.length > 0) {
+      parts.push(authentication.join(":"))
+      parts.push("/")
+    }
+    parts.push(host)
+
+    if(port) {
+      parts.push(`:${port}`)
+    }
+
+    parts.push("/")
+    parts.push(database)
+
+    return parts.join("")
+  }
+
+  let value = connectionString()
+  console.log(value)
+
+  const handleSubmit  = e => dispatch(initConnection(value))
 
   return (
     <div className={connectionMenu}>
       <div className={connectionPanel}>
-        <div className="field">
+        <Field>
           <label htmlFor="connections-string">
-            Postgres connection string
+            Host
           </label>
-          <input type="string" id="connections-string" value={connection} onChange={handleChange} placeholder="postgres://localhost/my-local-db" className={connectionInputStyle} />
-        </div>
+          <input type="string" id="connections-string" value={host} onChange={handleHostChange} className={connectionInputStyle} />
+        </Field>
+
+        <Field>
+          <label htmlFor="connections-string">
+            Port
+          </label>
+          <input type="string" id="connections-string" value={port} onChange={handlePortChange} className={connectionInputStyle} />
+        </Field>
+
+        <Field>
+          <label htmlFor="connections-string">
+            Database
+          </label>
+          <input type="string" id="connections-string" value={database} onChange={handleDatabaseChange} className={connectionInputStyle} />
+        </Field>
+        <Field>
+          <label htmlFor="connections-string">
+            Username
+          </label>
+          <input type="string" id="connections-string" value={username} onChange={handleUsernameChange} autocomplete="off" className={connectionInputStyle} />
+        </Field>
+        <Field>
+          <label htmlFor="connections-string">
+            Password
+          </label>
+          <input type="password" id="connections-string" value={password} onChange={handlePasswordChange} autocomplete="off"  className={connectionInputStyle} />
+        </Field>
+
         <input type="submit" onClick={handleSubmit} className="btn primary" value="Connect" disabled={status === "loading"}/>
       </div>
     </div>

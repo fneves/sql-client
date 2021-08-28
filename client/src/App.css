@@ -1,18 +1,5 @@
-.App {
-  text-align: center;
-}
-
 html, body {
-  font-size: 16px;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+  font-size: 14px;
 }
 
 input:not([type='submit']) {
