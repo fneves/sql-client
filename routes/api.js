@@ -75,24 +75,19 @@ router.post("/tables", function(req, res){
       }
     }
   )
-
 })
 
 router.post("/execute", function(req, res) {
   const connectionId = req.body.connection
   const query        = req.body.query
 
-  console.log(`Executing query ${query} via connection ${connectionId}`)
-
   try {
     let pool = connections[connectionId].connection
 
     pool.query(query, (err, result) => {
       if(err) {
-        console.dir(err)
         res.status(400).send({ error: err.stack.split("\n")[0] })
       } else {
-        console.log(result.rows)
         res.send({
           fields: result.fields.map(field => field.name),
           results: result.rows

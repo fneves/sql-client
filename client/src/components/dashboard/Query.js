@@ -27,10 +27,7 @@ export const Query = (props) => {
   const [query, setQuery] = useState(DEFAULT_QUERY)
   const connection = useSelector((state) => state.connection.connectionId)
   const dispatch = useDispatch()
-  const handleEditorChange = (value, _event) => {
-    console.log("setting query")
-    setQuery(value)
-  }
+  const handleEditorChange = (value, _event) => setQuery(value)
   const runQuery = () => dispatch(executeQuery({ connection: connection, query: query }))
 
   return (
