@@ -5,6 +5,13 @@ const columnsHeader = css`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: 5px;
+`
+const listStyle = css({
+  marginTop: "0px"
+})
+const columnStyle = css`
+  text-align: left;
 `
 
 export const ColumnList = (props) => {
@@ -12,7 +19,8 @@ export const ColumnList = (props) => {
 
   let expandedColumns = ""
   if(expanded) {
-    expandedColumns = props.columns.map(column => <li key={column.name}>{column.name} ({column.type})</li>)
+    const sortedColumns = [...props.columns].sort((a, b) => a.name.localeCompare(b.name))
+    expandedColumns = sortedColumns.map(column => <li key={column.name} className={columnStyle}>{column.name} ({column.type})</li>)
   }
   const icon = expanded ? "-" : "+"
 
@@ -23,8 +31,9 @@ export const ColumnList = (props) => {
         <h5>Columns</h5>
         <button onClick={toggle}>{icon}</button>
       </div>
-
-      {expandedColumns}
+      <ul className={listStyle}>
+        {expandedColumns}
+      </ul>
     </div>
   )
 }

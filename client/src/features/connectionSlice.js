@@ -57,6 +57,10 @@ export const initConnection = createAsyncThunk(
   }
 )
 
+function tableSorter(a, b){
+  return a.name.localeCompare(b.name);
+}
+
 export const connectionSlice = createSlice({
 	name: 'connection',
 	initialState: {
@@ -94,7 +98,8 @@ export const connectionSlice = createSlice({
         state.status = 'loading'
       })
       .addCase(fetchTables.fulfilled, (state, action) => {
-        state.tables = action.payload.tables
+
+        state.tables = action.payload.tables.sort(tableSorter)
         state.error = null
         state.status = 'idle'
       })

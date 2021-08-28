@@ -5,11 +5,12 @@ import Table from "./sidebar/Table"
 
 const sidebarContainer = css`
   padding: 20px 10px;
-  min-width: 200px;
-  height: 100vh;
+  min-width: 250px;
+  height: 97vh;
   overflow-y: auto;
   background: white;
   border-right: solid 1px lightgray;
+  font-size: 12px;
 `
 
 const Sidebar = () => {

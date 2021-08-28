@@ -26,6 +26,7 @@ const resultsCell = css({
   border:       "1px solid black",
   width:        "auto",
   minWidth:     "50px",
+  fontSize:      "14px"
 })
 
 const Results = () => {
